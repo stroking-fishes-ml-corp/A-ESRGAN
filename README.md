@@ -1,5 +1,6 @@
 # A-ESRGAN: Training Real-World Blind Super-Resolution with Attention-based U-net Discriminators
 
+The authors are hidden for the purpose of double blind in the process of review.
 
 
 <p align="center">
