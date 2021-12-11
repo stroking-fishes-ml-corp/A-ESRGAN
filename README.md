@@ -94,7 +94,7 @@ The datasets for test in our A-ESRGAN model are the standard benchmark datasets 
   <img src="figures/Example Images.png">
 </p>
 
-A combined dataset can be find in [DatasetsForSR.zip](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v0.3.1/DatasetsForSR.zip).
+A combined dataset can be find in [DatasetsForSR.zip](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/DatasetsForSR.zip).
 
 We compare with ESRGAN, RealSR, BSRGAN, RealESRGAN on the above 5 datasets and use NIQE as our metrics. The result can be seen in the table below:
 
@@ -110,10 +110,10 @@ Note a **lower** NIQE score shows a better perceptual quality.
 
 **!** We now only provides 4X super resolution now.
 
-Download pre-trained models: [A-ESRGAN-Single.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth) to the `experiments/pretrained_models`.
+Download pre-trained models: [A-ESRGAN-Single.pth](https://github.com/aesrgan/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth) to the `experiments/pretrained_models`.
 
 ```bash
-wget https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth
+wget https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth
 ```
 
 Inference:
@@ -141,7 +141,7 @@ The Visualization Script is used to visualize the attention coefficient of each 
 
 Generate heat maps:
 
-First download [single.zip](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/single.zip) and unzip to `experiments/pretrained_models/single`
+First download [single.zip](https://github.com/aesrgan/A-ESRGAN/releases/download/v1.0.0/single.zip) and unzip to `experiments/pretrained_models/single`
 
 ```bash
 cd Visualization_Script
@@ -160,7 +160,7 @@ The combined images will be contained in  `Visualization_Script/Combined`
 
 **!** **Multi-scale discriminator attention map visualization:**
 
-Download [multi.zip](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/multi.zip) and  unzip to `experiments/pretrained_models/multi`
+Download [multi.zip](https://github.com/aesrgan/A-ESRGAN/releases/download/v1.0.0/multi.zip) and  unzip to `experiments/pretrained_models/multi`
 
 Run  `discriminator_attention_visual(Mulit).py` similar to  `discriminator_attention_visual(Single).py`.
 
@@ -174,19 +174,19 @@ Run `Multi_discriminator_Output.py` and you could see the visualization of pixel
 
 The following models are the **generators**, used in the A-ESRGAN
 
-- [A_ESRGAN_Multi.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Multi.pth): X4 model trained with multi scale U-net based discriminators.
-- [A_ESRGAN_Single.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth): X4 model trained with a single U-net based discriminators.
-- [RealESRNet_x4plus.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/RealESRNet_x4plus.pth): official Real-ESRNet model (X4), where A-ESRGAN is fine-tuned on.
+- [A_ESRGAN_Multi.pth](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Multi.pth): X4 model trained with multi scale U-net based discriminators.
+- [A_ESRGAN_Single.pth](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single.pth): X4 model trained with a single U-net based discriminators.
+- [RealESRNet_x4plus.pth](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/RealESRNet_x4plus.pth): official Real-ESRNet model (X4), where A-ESRGAN is fine-tuned on.
 
 The following models are **discriminators**, which are usually used for fine-tuning.
 
-- [A-ESRGAN-Mult_D.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A-ESRGAN_Multi_D.pth)
-- [A-ESRGAN-Single_D.pth](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single_D.pth)
+- [A-ESRGAN-Mult_D.pth](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/A-ESRGAN_Multi_D.pth)
+- [A-ESRGAN-Single_D.pth](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/A_ESRGAN_Single_D.pth)
 
 The following models are the **checkpoints** of discriminators during A-ESRGAN training process, which are provided for visualization attention.  
 
-- [Single(net_d_5000.pth -> net_d_350000.pth)](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/single.zip)
-- [Multi(net_d_5000.pth -> net_d_185000.pth)](https://github.com/stroking-fishes-ml-corp/A-ESRGAN/releases/download/v1.0.0/multi.zip)
+- [Single(net_d_5000.pth -> net_d_350000.pth)](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/single.zip)
+- [Multi(net_d_5000.pth -> net_d_185000.pth)](https://github.com/aesgan/A-ESRGAN/releases/download/v1.0.0/multi.zip)
 
 ## Training and Finetuning on your own dataset
 
