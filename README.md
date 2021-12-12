@@ -29,10 +29,10 @@ Introduce attention U-net into the field of blind real world image super resolut
 
 ## Network Architecture
 
-The **overall architecture** of the A-ESRGAN:
+The **overall architecture** of the A-ESRGAN, where the generator is adopted from ESRGAN:
 
 <p align="center">
-  <img src="figures/GAN.png">
+  <img src="figures/TotalArch.png">
 </p>
 
 The architecture of a single **attention U-net discriminator**:
