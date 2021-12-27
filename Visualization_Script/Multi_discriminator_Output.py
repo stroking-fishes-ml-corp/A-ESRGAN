@@ -12,10 +12,13 @@ class add_attn(nn.Module):
         super(add_attn, self).__init__()
         self.W = nn.Sequential(
             nn.Conv2d(x_channels, x_channels, kernel_size=1, stride=1, padding=0), nn.BatchNorm2d(x_channels))
-        self.theta = nn.Conv2d(x_channels, x_channels, kernel_size=2, stride=2, padding=0, bias=False)
+        self.theta = nn.Conv2d(x_channels, x_channels,
+                               kernel_size=2, stride=2, padding=0, bias=False)
 
-        self.phi = nn.Conv2d(g_channels, x_channels, kernel_size=1, stride=1, padding=0, bias=True)
-        self.psi = nn.Conv2d(x_channels, out_channels=1, kernel_size=1, stride=1, padding=0, bias=True)
+        self.phi = nn.Conv2d(g_channels, x_channels,
+                             kernel_size=1, stride=1, padding=0, bias=True)
+        self.psi = nn.Conv2d(x_channels, out_channels=1,
+                             kernel_size=1, stride=1, padding=0, bias=True)
 
     def forward(self, x, g):
         input_size = x.size()
@@ -24,11 +27,13 @@ class add_attn(nn.Module):
 
         theta_x = self.theta(x)
         theta_x_size = theta_x.size()
-        phi_g = F.interpolate(self.phi(g), size=theta_x_size[2:], mode='bilinear', align_corners=False)
+        phi_g = F.interpolate(
+            self.phi(g), size=theta_x_size[2:], mode='bilinear', align_corners=False)
         f = F.relu(theta_x + phi_g, inplace=True)
 
         sigm_psi_f = torch.sigmoid(self.psi(f))
-        sigm_psi_f = F.interpolate(sigm_psi_f, size=input_size[2:], mode='bilinear', align_corners=False)
+        sigm_psi_f = F.interpolate(
+            sigm_psi_f, size=input_size[2:], mode='bilinear', align_corners=False)
 
         y = sigm_psi_f.expand_as(x) * x
         W_y = self.W(y)
@@ -45,9 +50,11 @@ class unetCat(nn.Module):
 
     def forward(self, input_1, input_2):
         # Upsampling
-        input_2 = F.interpolate(input_2, scale_factor=2, mode='bilinear', align_corners=False)
+        input_2 = F.interpolate(input_2, scale_factor=2,
+                                mode='bilinear', align_corners=False)
 
-        output_2 = F.leaky_relu(self.convU(input_2), negative_slope=0.2, inplace=True)
+        output_2 = F.leaky_relu(self.convU(
+            input_2), negative_slope=0.2, inplace=True)
 
         offset = output_2.size()[2] - input_1.size()[2]
         padding = 2 * [offset // 2, offset // 2]
@@ -64,19 +71,26 @@ class UNetDiscriminatorSN(nn.Module):
         super(UNetDiscriminatorSN, self).__init__()
         norm = spectral_norm
 
-        self.conv0 = nn.Conv2d(num_in_ch, num_feat, kernel_size=3, stride=1, padding=1)
+        self.conv0 = nn.Conv2d(num_in_ch, num_feat,
+                               kernel_size=3, stride=1, padding=1)
 
-        self.conv1 = norm(nn.Conv2d(num_feat, num_feat * 2, 3, 2, 1, bias=False))
-        self.conv2 = norm(nn.Conv2d(num_feat * 2, num_feat * 4, 3, 2, 1, bias=False))
+        self.conv1 = norm(
+            nn.Conv2d(num_feat, num_feat * 2, 3, 2, 1, bias=False))
+        self.conv2 = norm(
+            nn.Conv2d(num_feat * 2, num_feat * 4, 3, 2, 1, bias=False))
 
         # Center
-        self.conv3 = norm(nn.Conv2d(num_feat * 4, num_feat * 8, 3, 2, 1, bias=False))
+        self.conv3 = norm(
+            nn.Conv2d(num_feat * 4, num_feat * 8, 3, 2, 1, bias=False))
 
-        self.gating = norm(nn.Conv2d(num_feat * 8, num_feat * 4, 1, 1, 1, bias=False))
+        self.gating = norm(
+            nn.Conv2d(num_feat * 8, num_feat * 4, 1, 1, 1, bias=False))
 
         # attention Blocks
-        self.attn_1 = add_attn(x_channels=num_feat * 4, g_channels=num_feat * 4)
-        self.attn_2 = add_attn(x_channels=num_feat * 2, g_channels=num_feat * 4)
+        self.attn_1 = add_attn(x_channels=num_feat * 4,
+                               g_channels=num_feat * 4)
+        self.attn_2 = add_attn(x_channels=num_feat * 2,
+                               g_channels=num_feat * 4)
         self.attn_3 = add_attn(x_channels=num_feat, g_channels=num_feat * 4)
 
         # Cat
@@ -85,9 +99,12 @@ class UNetDiscriminatorSN(nn.Module):
         self.cat_3 = unetCat(dim_in=num_feat * 2, dim_out=num_feat)
 
         # upsample
-        self.conv4 = norm(nn.Conv2d(num_feat * 8, num_feat * 4, 3, 1, 1, bias=False))
-        self.conv5 = norm(nn.Conv2d(num_feat * 4, num_feat * 2, 3, 1, 1, bias=False))
-        self.conv6 = norm(nn.Conv2d(num_feat * 2, num_feat, 3, 1, 1, bias=False))
+        self.conv4 = norm(
+            nn.Conv2d(num_feat * 8, num_feat * 4, 3, 1, 1, bias=False))
+        self.conv5 = norm(
+            nn.Conv2d(num_feat * 4, num_feat * 2, 3, 1, 1, bias=False))
+        self.conv6 = norm(
+            nn.Conv2d(num_feat * 2, num_feat, 3, 1, 1, bias=False))
 
         # extra
         self.conv7 = norm(nn.Conv2d(num_feat, num_feat, 3, 1, 1, bias=False))
@@ -156,13 +173,16 @@ if __name__ == "__main__":
     from PIL import Image
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--img_path', default=r"..\inputs\1.png", help='image path')
+    parser.add_argument(
+        '--img_path', default=r"..\inputs\1.png", help='image path')
     parser.add_argument(
         '--model_path',
-        default=r"..\experiments\pretrained_models\A-ESRGAN_Multi_D.pth",
+        default=r"..\experiments\pretrained_models\A_ESRGAN_Multi_D.pth",
         help='discriminator model list path')
-    parser.add_argument('--save_path', default=r".\Visual", help='path to save the heat map')
-    parser.add_argument('--Disc_num', default=2, help='path to save the heat map')
+    parser.add_argument('--save_path', default=r".\Visual",
+                        help='path to save the heat map')
+    parser.add_argument('--Disc_num', default=2,
+                        help='path to save the heat map')
 
     args = parser.parse_args()
     dNum = args.Disc_num
